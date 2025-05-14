@@ -1,0 +1,1 @@
+A full-stack stock trading and monitoring platform inspired by Zerodha's core functionalities. The platform enables real-time stock data visualization, trade execution, portfolio management, and performance tracking, providing a seamless and intuitive user experience.
