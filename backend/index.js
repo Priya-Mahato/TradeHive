@@ -1,4 +1,5 @@
-require("dotenv").config();
+const dotenv = require("dotenv");
+dotenv.config();
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -20,6 +21,9 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+
+app.use("/api/v1/users", authRoutes);
+app.use("/api/v1/secure", secureRoutes);
 
 // app.get("/addHoldings", async (req, res) => {
 //   let tempHoldings = [
