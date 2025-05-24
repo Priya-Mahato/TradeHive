@@ -19,6 +19,9 @@ const uri = process.env.MONGO_URL;
 
 const app = express();
 
+const authRoutes = require("./routes/auth");
+const secureRoutes = require("./routes/secureData");
+
 app.use(cors());
 app.use(bodyParser.json());
 
