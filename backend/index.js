@@ -5,6 +5,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+
 
 const { HoldingsModel } = require("./model/HoldingsModel");
 
@@ -13,20 +15,45 @@ const { PositionsModel } = require("./model/PositionsModel");
 const { OrdersModel } = require("./model/OrdersModel");
 
 
+const authRoutes = require("./routes/AuthRoute");
+const secureRoutes = require("./routes/secureData");
+
+
+
+const app = express();
 const PORT = process.env.PORT || 3002;
 const uri = process.env.MONGO_URL;
 
 
-const app = express();
 
-const authRoutes = require("./routes/auth");
-const secureRoutes = require("./routes/secureData");
 
-app.use(cors());
+// Middleware
+app.use(cookieParser());
+app.use(cors({
+  origin: ["*", "http://localhost:3000", "http://localhost:3001"],
+  credentials: true, // Required for sending cookies
+}));
+
 app.use(bodyParser.json());
 
+
+
+//Routes
 app.use("/api/v1/users", authRoutes);
 app.use("/api/v1/secure", secureRoutes);
+
+
+
+
+// Default root
+app.get("/", (req, res) => {
+  res.send("Backend server is running!");
+});
+
+
+
+
+// Data APIs
 
 // app.get("/addHoldings", async (req, res) => {
 //   let tempHoldings = [
@@ -218,14 +245,20 @@ app.post("/newOrder", async (req, res) => {
     mode : req.body.mode,
   });
 
-  newOrder.save();
-
+  await newOrder.save();
   res.send("Order saved!");
 });
 
 
-app.listen(PORT, () => {
-  console.log("App started!");
-  mongoose.connect(uri);
-  console.log("DB started!");
-});
+//Start the server only after DB connects
+mongoose
+  .connect(uri)
+  .then(() => {
+    console.log("DB connected!");
+    app.listen(PORT, () => {
+      console.log(`Server started on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Failed to connect to MongoDB", err);
+  });
