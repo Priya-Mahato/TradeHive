@@ -1,53 +1,67 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
 import GeneralContext from "./GeneralContext";
-
 import "./BuyActionWindow.css";
 
 const BuyActionWindow = ({ uid }) => {
   const [stockQuantity, setStockQuantity] = useState(1);
   const [stockPrice, setStockPrice] = useState(0.0);
   const [holdings, setHoldings] = useState([]);
+  const { closeBuyWindow } = useContext(GeneralContext); // Correct context usage
 
   useEffect(() => {
-    // Fetch all holdings when the component loads
-    axios.get("http://localhost:3002/allHoldings").then((res) => {
-      setHoldings(res.data);
-    });
+    const fetchHoldings = async () => {
+      try {
+        const res = await axios.get("http://localhost:8000/allHoldings");
+        setHoldings(res.data);
+      } catch (err) {
+        console.error("Error fetching holdings:", err);
+      }
+    };
+
+    fetchHoldings();
   }, []);
 
-  const handleBuyClick = () => {
-    axios.post("http://localhost:3002/newOrder", {
-      name: uid,
-      qty: Number(stockQuantity),
-      price: Number(stockPrice),
-      mode: "BUY",
-    });
-    GeneralContext.closeBuyWindow();
+  const handleBuyClick = async () => {
+    try {
+      await axios.post("http://localhost:8000/newOrder", {
+        name: uid,
+        qty: Number(stockQuantity),
+        price: Number(stockPrice),
+        mode: "BUY",
+      });
+      closeBuyWindow();
+    } catch (err) {
+      console.error("Buy Error:", err);
+      alert("Buy failed. See console for error.");
+    }
   };
 
-  const handleSellClick = () => {
-    const userStock = holdings.find((h) => h.name === uid);
+  const handleSellClick = async () => {
+    try {
+      const userStock = holdings.find((h) => h.name === uid);
 
-    if (!userStock || Number(stockQuantity) > userStock.qty) {
-      alert("Insufficient quantity to sell!");
-      return;
+      if (!userStock || Number(stockQuantity) > userStock.qty) {
+        alert("Insufficient quantity to sell!");
+        return;
+      }
+
+      await axios.post("http://localhost:8000/newOrder", {
+        name: uid,
+        qty: Number(stockQuantity),
+        price: Number(stockPrice),
+        mode: "SELL",
+      });
+      closeBuyWindow();
+    } catch (err) {
+      console.error("Sell Error:", err);
+      alert("Sell failed. See console for error.");
     }
-
-    axios.post("http://localhost:3002/newOrder", {
-      name: uid,
-      qty: Number(stockQuantity),
-      price: Number(stockPrice),
-      mode: "SELL",
-    });
-
-    GeneralContext.closeBuyWindow();
   };
 
   const handleCancelClick = () => {
-    GeneralContext.closeBuyWindow();
+    closeBuyWindow();
   };
 
   return (
