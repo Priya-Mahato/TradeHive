@@ -8,34 +8,32 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { AuthContext } from '../../contexts/AuthContext';
 import { Snackbar } from '@mui/material';
+import { AuthContext } from '../../contexts/AuthContext';
+import { useNavigate } from "react-router-dom"; // ✅ Added
 
 const defaultTheme = createTheme();
 
 export default function Authentication() {
-  // Initialize states with empty strings
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [name, setName] = React.useState("");
   const [error, setError] = React.useState("");
   const [message, setMessage] = React.useState("");
-
   const [formState, setFormState] = React.useState(0); // 0 = Login, 1 = Register
   const [open, setOpen] = React.useState(false);
 
   const { handleRegister, handleLogin } = React.useContext(AuthContext);
+  const navigate = useNavigate(); // ✅ Added
 
   let handleAuth = async () => {
     try {
       if (formState === 0) {
-        // Login
         await handleLogin(username, password);
         setError("");
-        // inputs can remain or you can clear them here if you want
+        navigate("/"); // ✅ Redirect to home after login
       }
       if (formState === 1) {
-        // Register
         let result = await handleRegister(name, username, password);
         setUsername("");
         setPassword("");
@@ -86,7 +84,7 @@ export default function Authentication() {
 
             <div>
               <Button variant={formState === 0 ? "contained" : ""} onClick={() => { setFormState(0); setError(""); }}>
-                Sign In
+                Login
               </Button>
               <Button variant={formState === 1 ? "contained" : ""} onClick={() => { setFormState(1); setError(""); }}>
                 Register

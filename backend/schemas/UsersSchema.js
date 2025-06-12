@@ -17,14 +17,8 @@ const UsersSchema = new Schema({
     required: [true, "Your password is required"],
   },
   token: {
-    type: String,
-    default: null,
+    type: String  
   },
-});
-
-// Hash password before saving
-UsersSchema.pre("save", async function () {
-  this.password = await bcrypt.hash(this.password, 12);
 });
 
 module.exports = { UsersSchema };
