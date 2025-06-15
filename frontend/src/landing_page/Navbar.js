@@ -8,20 +8,17 @@ function Navbar() {
 
   const handleGetStartedClick = (e) => {
     e.preventDefault();
-    
+
     if (!isLoggedIn) {
-      // Show warning for non-authenticated users
       setShowWarning(true);
       setTimeout(() => setShowWarning(false), 3000);
     } else {
-      // Redirect authenticated users to external dashboard app
       window.location.href = 'http://localhost:3001/';
     }
   };
 
   return (
     <>
-      {/* RED WARNING CENTERED */}
       {showWarning && (
         <div
           className="position-fixed top-50 start-50 translate-middle alert alert-danger text-center shadow"
@@ -40,7 +37,7 @@ function Navbar() {
       <nav className="navbar navbar-expand-lg border-bottom" style={{ backgroundColor: "#FFF" }}>
         <div className="container p-2">
           <Link className="navbar-brand" to="/">
-            <img src="media/TradeHiveLogo.svg" style={{ width: "24%" }} alt="logo" />
+            <img src="/media/TradeHiveLogo.svg" style={{ width: "24%" }} alt="logo" />
           </Link>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -54,17 +51,16 @@ function Navbar() {
               )}
               {isLoggedIn && (
                 <li className="nav-item">
-                  <a
-                    href="#"
-                    className="nav-link active"
+                  <button
+                    className="nav-link active btn btn-link"
                     onClick={(e) => {
                       e.preventDefault();
                       logout();
                     }}
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", textDecoration: "none" }}
                   >
                     Logout
-                  </a>
+                  </button>
                 </li>
               )}
               <li className="nav-item">
@@ -87,17 +83,14 @@ function Navbar() {
                   Support
                 </Link>
               </li>
-
-              {/* GET STARTED */}
               <li className="nav-item">
-                <a
-                  href="#"
-                  className="nav-link active"
+                <button
+                  className="nav-link active btn btn-link"
                   onClick={handleGetStartedClick}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", textDecoration: "none" }}
                 >
                   Get Started
-                </a>
+                </button>
               </li>
             </ul>
           </div>

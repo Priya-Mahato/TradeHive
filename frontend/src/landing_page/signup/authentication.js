@@ -3,14 +3,12 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Snackbar } from '@mui/material';
 import { AuthContext } from '../../contexts/AuthContext';
-import { useNavigate } from "react-router-dom"; // ✅ Added
+import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
@@ -24,17 +22,17 @@ export default function Authentication() {
   const [open, setOpen] = React.useState(false);
 
   const { handleRegister, handleLogin } = React.useContext(AuthContext);
-  const navigate = useNavigate(); // ✅ Added
+  const navigate = useNavigate();
 
-  let handleAuth = async () => {
+  const handleAuth = async () => {
     try {
       if (formState === 0) {
         await handleLogin(username, password);
         setError("");
-        navigate("/"); // ✅ Redirect to home after login
+        navigate("/");
       }
       if (formState === 1) {
-        let result = await handleRegister(name, username, password);
+        const result = await handleRegister(name, username, password);
         setUsername("");
         setPassword("");
         setName("");
@@ -45,53 +43,65 @@ export default function Authentication() {
       }
     } catch (err) {
       console.log(err);
-      let message = err.response?.data?.message || "Something went wrong";
+      const message = err.response?.data?.message || "Something went wrong";
       setError(message);
     }
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
-        <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <CssBaseline />
+      
+      {/* Simple test layout */}
+      <div style={{ display: 'flex', height: '100vh' }}>
+        
+        {/* Left side - Form */}
+        <div style={{ 
+          flex: '0 0 40%', 
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '20px',
+          backgroundColor: '#fff',
+          boxShadow: '0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)' // Paper-like shadow
+        }}>
           <Box
             sx={{
-              my: 8,
-              mx: 4,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              width: '100%',
+              maxWidth: 400
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
 
-            <div>
-              <Button variant={formState === 0 ? "contained" : ""} onClick={() => { setFormState(0); setError(""); }}>
+            {/* Login/Register switch buttons */}
+            <Box sx={{ display: 'flex', gap: 2, my: 2 }}>
+              <Button
+                variant={formState === 0 ? "contained" : "outlined"}
+                onClick={() => {
+                  setFormState(0);
+                  setError("");
+                }}
+              >
                 Login
               </Button>
-              <Button variant={formState === 1 ? "contained" : ""} onClick={() => { setFormState(1); setError(""); }}>
+              <Button
+                variant={formState === 1 ? "contained" : "outlined"}
+                onClick={() => {
+                  setFormState(1);
+                  setError("");
+                }}
+              >
                 Register
               </Button>
-            </div>
+            </Box>
 
-            <Box component="form" noValidate sx={{ mt: 1 }}>
+            {/* Form */}
+            <Box component="form" noValidate sx={{ mt: 1, width: '100%' }}>
               {formState === 1 && (
                 <TextField
                   margin="normal"
@@ -117,6 +127,7 @@ export default function Authentication() {
                 autoFocus={formState === 0}
                 onChange={(e) => setUsername(e.target.value)}
               />
+
               <TextField
                 margin="normal"
                 required
@@ -129,7 +140,20 @@ export default function Authentication() {
                 onChange={(e) => setPassword(e.target.value)}
               />
 
-              <p style={{ color: "red" }}>{error}</p>
+              {error && (
+                <Box 
+                  sx={{ 
+                    color: 'error.main', 
+                    mt: 1, 
+                    p: 1, 
+                    backgroundColor: 'error.lighter',
+                    borderRadius: 1,
+                    fontSize: '0.875rem'
+                  }}
+                >
+                  {error}
+                </Box>
+              )}
 
               <Button
                 type="button"
@@ -137,14 +161,32 @@ export default function Authentication() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
                 onClick={handleAuth}
+                disabled={
+                  !username || 
+                  !password || 
+                  (formState === 1 && !name)
+                }
               >
                 {formState === 0 ? "Login" : "Register"}
               </Button>
             </Box>
           </Box>
-        </Grid>
-      </Grid>
+        </div>
 
+        {/* Right side - Image */}
+        <div style={{
+          flex: '1',
+          backgroundImage: 'url(/media/trade-image.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          height: '100vh'
+        }}>
+        </div>
+        
+      </div>
+
+      {/* Snackbar for registration success */}
       <Snackbar
         open={open}
         autoHideDuration={4000}

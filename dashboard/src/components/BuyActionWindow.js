@@ -8,7 +8,7 @@ const BuyActionWindow = ({ uid }) => {
   const [stockQuantity, setStockQuantity] = useState(1);
   const [stockPrice, setStockPrice] = useState(0.0);
   const [holdings, setHoldings] = useState([]);
-  const { closeBuyWindow } = useContext(GeneralContext); // Correct context usage
+  const { closeBuyWindow } = useContext(GeneralContext);
 
   useEffect(() => {
     const fetchHoldings = async () => {
@@ -31,6 +31,10 @@ const BuyActionWindow = ({ uid }) => {
         price: Number(stockPrice),
         mode: "BUY",
       });
+      
+      // Trigger orders refresh immediately after successful buy
+      window.dispatchEvent(new Event('refreshOrders'));
+      
       closeBuyWindow();
     } catch (err) {
       console.error("Buy Error:", err);
@@ -53,6 +57,10 @@ const BuyActionWindow = ({ uid }) => {
         price: Number(stockPrice),
         mode: "SELL",
       });
+      
+      // Trigger orders refresh immediately after successful sell
+      window.dispatchEvent(new Event('refreshOrders'));
+      
       closeBuyWindow();
     } catch (err) {
       console.error("Sell Error:", err);
@@ -93,7 +101,7 @@ const BuyActionWindow = ({ uid }) => {
       </div>
 
       <div className="buttons">
-        <span>Margin required ₹140.65</span>
+        <span>Margin required $1,760</span>
         <div>
           <Link className="btn btn-blue" onClick={handleBuyClick}>
             Buy

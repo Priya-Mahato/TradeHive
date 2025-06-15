@@ -10,6 +10,21 @@ const Orders = () => {
     fetchOrders();
   }, []);
 
+  // Listen for custom refresh event from trading component
+  useEffect(() => {
+    const handleOrderRefresh = () => {
+      fetchOrders();
+    };
+
+    // Add event listener for custom refresh event
+    window.addEventListener('refreshOrders', handleOrderRefresh);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('refreshOrders', handleOrderRefresh);
+    };
+  }, []);
+
   const fetchOrders = async () => {
     try {
       const response = await fetch('http://localhost:8000/api/v1/orders/orders');
@@ -68,7 +83,7 @@ const Orders = () => {
                   {order.mode}
                 </td>
                 <td>{order.qty}</td>
-                <td>₹{order.price}</td>
+                <td>${order.price}</td>
                 <td>{order.status || 'Completed'}</td>
                 <td>{new Date(order.createdAt || Date.now()).toLocaleDateString()}</td>
               </tr>

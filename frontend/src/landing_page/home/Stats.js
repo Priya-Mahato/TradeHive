@@ -33,7 +33,7 @@ function Stats() {
 
         </div>
         <div className="col-6 p-5">
-          <img src="media\ecosystem (1).png" style={{ width: "93%" }} />
+          <img src="media\ecosystem.png" style={{ width: "93%" }} />
             <div className='text-center'>
                     <a href='' className="mx-5" style={{textDecoration:"none"}}>Start Trading with TradeHive <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
                     <a href='' style={{textDecoration:"none"}}>Explore our features <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>

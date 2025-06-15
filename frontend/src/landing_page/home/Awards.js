@@ -4,7 +4,7 @@ function Awards() {
     <div className="container p-5 mb-5">
       <div className="row">
         <div className="col-6 p-5">
-          <img src="media\largestBroker (1).svg" alt="Awards" />
+          <img src="media\largestBroker.svg" alt="Awards" />
         </div>
         <div className="col-6 p-5 mt-5">
           <h1>Empower Your Trading Journey with TradeHive</h1>
@@ -44,7 +44,7 @@ function Awards() {
             </div>
 
           </div>
-          <img src="media\pressLogos (1).png" style={{width:"90%"}}/>
+          <img src="media\pressLogos.png" style={{width:"90%"}}/>
         </div>
       </div>
     </div>

@@ -26,10 +26,10 @@ function LeftSection({
           </div>
           <div className="mt-3" style={{ textDecoration: "none" }}>
             <a href={googleplay}>
-              <img src="media\googlePlayBadge (1).svg" />
+              <img src="media\googlePlayBadge.svg" />
             </a>
             <a href={appStore}  style={{ textDecoration: "none" }}>
-              <img src="media\appstoreBadge (1).svg" style={{marginLeft:"50px"}}/>
+              <img src="media\appstoreBadge.svg" style={{marginLeft:"50px"}}/>
             </a>
           </div>
         </div>
