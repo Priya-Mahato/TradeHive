@@ -4,6 +4,8 @@ import axios from "axios";
 import GeneralContext from "./GeneralContext";
 import "./BuyActionWindow.css";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const BuyActionWindow = ({ uid }) => {
   const [stockQuantity, setStockQuantity] = useState(1);
   const [stockPrice, setStockPrice] = useState(0.0);
@@ -13,7 +15,7 @@ const BuyActionWindow = ({ uid }) => {
   useEffect(() => {
     const fetchHoldings = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/allHoldings");
+        const res = await axios.get(`${API_BASE_URL}/allHoldings`);
         setHoldings(res.data);
       } catch (err) {
         console.error("Error fetching holdings:", err);
@@ -25,7 +27,7 @@ const BuyActionWindow = ({ uid }) => {
 
   const handleBuyClick = async () => {
     try {
-      await axios.post("http://localhost:8000/api/v1/orders/newOrder", {
+      await axios.post(`${API_BASE_URL}/api/v1/orders/newOrder`, {
         name: uid,
         qty: Number(stockQuantity),
         price: Number(stockPrice),
@@ -51,7 +53,7 @@ const BuyActionWindow = ({ uid }) => {
         return;
       }
 
-      await axios.post("http://localhost:8000/api/v1/orders/newOrder", {
+      await axios.post(`${API_BASE_URL}/api/v1/orders/newOrder`, {
         name: uid,
         qty: Number(stockQuantity),
         price: Number(stockPrice),

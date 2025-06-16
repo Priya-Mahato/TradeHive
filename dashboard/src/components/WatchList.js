@@ -1,5 +1,6 @@
 //WatchList.js
 import "./WatchList.css";
+
 import React, { useState, useContext, useEffect, useCallback } from "react";
 import axios from "axios";
 import GeneralContext from "./GeneralContext";
@@ -23,7 +24,7 @@ const WatchList = () => {
   const [symbols, setSymbols] = useState(["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "META", "NFLX", "NVDA"]);
 
   // Backend URL - make this configurable
-  const BACKEND_URL = "http://localhost:8000";
+  const BACKEND_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
 
   // Test backend connection
   const testBackendConnection = useCallback(async () => {

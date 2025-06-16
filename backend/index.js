@@ -12,13 +12,13 @@ const stockRoutes = require("./routes/stocks.routes");
 const { HoldingsModel } = require("./model/HoldingsModel");
 const { PositionsModel } = require("./model/PositionsModel");
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 const uri = process.env.MONGO_URL;
 
 const app = express();
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001'],
+  origin: ['https://tradehive-frontend.onrender.com', 'https://tradehive-dashboard.onrender.com'],
   credentials: true
 }));;
 app.use(express.json());

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Orders.css";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +29,7 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/v1/orders/orders');
+      const response = await fetch(`${API_BASE_URL}/api/v1/orders/orders`);
       const data = await response.json();
       setOrders(data);
       setLoading(false);
