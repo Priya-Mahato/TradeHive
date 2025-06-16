@@ -30,10 +30,10 @@ const WatchList = () => {
   const testBackendConnection = useCallback(async () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/api/v1/test`);
-      console.log("✅ Backend connected:", response.data);
+      console.log("Backend connected:", response.data);
       return true;
     } catch (err) {
-      console.error("❌ Backend connection failed:", err);
+      console.error("Backend connection failed:", err);
       setError(`Cannot connect to backend server at ${BACKEND_URL}. Please make sure the server is running.`);
       return false;
     }
