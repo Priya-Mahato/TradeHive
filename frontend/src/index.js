@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 
@@ -15,14 +15,14 @@ import NotFound from './landing_page/NotFound';
 
 import { AuthProvider } from './contexts/AuthContext';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <AuthProvider>
       <Navbar />
       <Routes>
         <Route path='/' element={<HomePage />} />
-        <Route path='/signup' element={<Authentication  />} />
+        <Route path='/signup' element={<Authentication />} />
         <Route path='/about' element={<AboutPage />} />
         <Route path='/product' element={<ProductPage />} />
         <Route path='/pricing' element={<PricingPage />} />
