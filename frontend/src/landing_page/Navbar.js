@@ -13,7 +13,7 @@ function Navbar() {
       setShowWarning(true);
       setTimeout(() => setShowWarning(false), 3000);
     } else {
-      window.location.href = 'http://localhost:3001/';
+      window.location.href = 'https://tradehive-dashboard.onrender.com';
     }
   };
 
